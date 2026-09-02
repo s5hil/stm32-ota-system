@@ -1,0 +1,14 @@
+{
+  "version": "1.0.1",
+  "build": 5,
+  "slot_a": {
+    "filename": "app_slota_b5.bin",
+    "crc32": "0xCD71C62C",
+    "size": 9884
+  },
+  "slot_b": {
+    "filename": "app_slotb_b5.bin",
+    "crc32": "0x821DD964",
+    "size": 9884
+  }
+}

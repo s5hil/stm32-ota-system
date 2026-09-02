@@ -1,0 +1,21 @@
+# CMake build output
+build/
+Debug/
+Release/
+
+# CubeMX
+.mxproject
+*.ioc.bak
+
+# Eclipse
+.settings/
+.cproject
+.project
+*.launch
+
+# Editor
+.vscode/
+
+# Local credentials - copy secrets.h.example to secrets.h
+secrets.h
+!secrets.h.example
