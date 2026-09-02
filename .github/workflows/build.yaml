@@ -42,7 +42,7 @@ jobs:
 
       - name: Build app (slot B)
         run: |
-          cmake -B build/slot_b -G Ninja -DLINKER_SCRIPT=slot_a.ld -DCMAKE_BUILD_TYPE=Debug stm32/b2_app
+          cmake -B build/slot_b -G Ninja -DLINKER_SCRIPT=slot_b.ld -DCMAKE_BUILD_TYPE=Debug stm32/b2_app
           cmake --build build/slot_b
 
       - name: Verify slot B vector table
@@ -51,7 +51,7 @@ jobs:
           echo "Slot B reset vector: 0x$VECTOR"
           case "$VECTOR" in
             0804*) echo "OK" ;;
-            *) echo "FAIL: expected 0x0803xxxx"; exit 1 ;;
+            *) echo "FAIL: expected 0x0804xxxx"; exit 1 ;;
           esac
 
       - name: Stage artifacts
