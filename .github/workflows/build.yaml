@@ -1,0 +1,37 @@
+name: Build firmware
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Arm GNU toolchain
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+        with:
+          release: '14.3.Rel1'
+
+      - name: Install Ninja
+        run: sudo apt-get install -y ninja-build
+
+      - name: Build bootloader
+        run: |
+          cmake -B build/bootloader -G Ninja -DCMAKE_BUILD_TYPE=Debug stm32/b2_bootloader
+          cmake --build build/bootloader
+
+      - name: Build app (slot A)
+        run: |
+          cmake -B build/slot_a -G Ninja -DLINKER_SCRIPT=slot_a.ld -DCMAKE_BUILD_TYPE=Debug stm32/b2_app
+          cmake --build build/slot_a
+
+      - name: Build app (slot B)
+        run: |
+          cmake -B build/slot_b -G Ninja -DLINKER_SCRIPT=slot_b.ld -DCMAKE_BUILD_TYPE=Debug stm32/b2_app
+          cmake --build build/slot_b
