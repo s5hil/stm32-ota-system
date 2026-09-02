@@ -35,3 +35,16 @@ jobs:
         run: |
           cmake -B build/slot_b -G Ninja -DLINKER_SCRIPT=slot_b.ld -DCMAKE_BUILD_TYPE=Debug stm32/b2_app
           cmake --build build/slot_b
+
+      - name: Stage artifacts
+        run: |
+          mkdir -p out
+          cp build/bootloader/b2_bootloader.bin out/
+          cp build/slot_a/b2_app.bin out/app_slot_a.bin
+          cp build/slot_b/b2_app.bin out/app_slot_b.bin
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: out/
