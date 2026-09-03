@@ -5,6 +5,9 @@
 // Copy secrets.h.example to secrets.h and fill in WIFI_SSID, WIFI_PASS, PI_HOST.
 #include "secrets.h"
 
+// must match UPDATE_HEADER_MAGIC in the bootloader
+const uint8_t UPDATE_HEADER_MAGIC = 0xB2;
+
 uint8_t* imageBuffer = nullptr;
 uint32_t imageSize = 0;
 uint32_t imageCrc = 0;
@@ -167,7 +170,7 @@ bool sendToStm32() {
   delay(50);
 
   uint8_t header[13];
-  header[0] = 0xB2;
+  header[0] = UPDATE_HEADER_MAGIC;
   memcpy(&header[1], &imageSize, 4);
   memcpy(&header[5], &imageCrc, 4);
   memcpy(&header[9], &serverBuild, 4);

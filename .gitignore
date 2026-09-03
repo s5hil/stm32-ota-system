@@ -19,3 +19,9 @@ Release/
 # Local credentials - copy secrets.h.example to secrets.h
 secrets.h
 !secrets.h.example
+
+# Release artifacts downloaded by pi/github_poller.py, not source
+pi/firmware/
+
+# Rewritten by the poller on every new release - see pi/metadata.json.example
+pi/metadata.json

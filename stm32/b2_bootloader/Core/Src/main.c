@@ -193,6 +193,7 @@ static HAL_StatusTypeDef slot_write(uint32_t slot, uint32_t offset, const uint8_
 
 #define UPDATE_PROMPT '?'
 #define UPDATE_REQUEST 'U'
+#define UPDATE_HEADER_MAGIC 0xB2U
 #define CHUNK_SIZE 256U
 #define PROMPT_TIMEOUT_MS 1000U
 #define HEADER_TIMEOUT_MS 2000U
@@ -233,6 +234,13 @@ static uint8_t receive_update(uint32_t target_slot) {
 
 	if (HAL_UART_Receive(&huart1, (uint8_t *)&header, sizeof(header), HEADER_TIMEOUT_MS) != HAL_OK) {
 		bl_print("Header timeout\r\n");
+		return 0U;
+	}
+
+	// a wrong magic means the stream is out of sync, not that the image is bad
+	if (header.magic != UPDATE_HEADER_MAGIC) {
+		HAL_UART_Transmit(&huart1, (uint8_t *)"NO", 2U, HAL_MAX_DELAY);
+		bl_print("Bad header magic\r\n");
 		return 0U;
 	}
 
